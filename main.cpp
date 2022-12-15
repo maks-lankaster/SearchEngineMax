@@ -34,7 +34,7 @@ void writeConfigFile() {
 void writeRequestsFile() {
     nlohmann::json requestJSON;
     std::vector<std::string> requests;
-    requests = {{"hello world"}, {"this is"}, {"spider glider provider"}, {"oh my god"}};
+    requests = {{"the day morning"}, {"stop start end"}, {"privet poka"}, {"oh my god"}};
     requestJSON = {
             {"requests", requests}
     };
