@@ -80,10 +80,6 @@
 
 # CMake
 cmake-build-*/
-!cmake-build-debug/resources/
-!cmake-build-debug/config.json
-!cmake-build-debug/requests.json
-!cmake-build-debug/answers.json
 
 # Mongo Explorer plugin
 .idea/**/mongoSettings.xml
