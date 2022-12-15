@@ -141,26 +141,27 @@ answers.json содержит:
 
 ```
 std::vector<std::string> getTextDocuments();
-```
 
-Получение содержимого файлов, перечисленных в *config.json*
+Получение содержимого файлов, перечисленных в config.json
+```
 
 ```
 int getResponsesLimit();
+
+Метод считывает поле maxResponses для определения предельного количества ответов на один запрос
 ```
-Метод считывает поле *maxResponses* для определения предельного количества ответов на один запрос
 
 ```
 std::vector<std::string> getRequests();
-```
 
-Получение списка запросов из файла *requests.json*
+Получение списка запросов из файла requests.json
+```
 
 ```
 void putAnswers(std::vector<std::vector<std::pair<int, float>>> answers);
-```
 
-Положить в файл *answers.json* результаты поисковых запросов
+Положить в файл answers.json результаты поисковых запросов
+```
 
 ### - Kласс InvertedIndex
 
@@ -170,18 +171,18 @@ void putAnswers(std::vector<std::vector<std::pair<int, float>>> answers);
 
 ```
 void updateDocumentBase(std::vector<std::string> inputDocs);
-```
 
 Обновить или заполнить базу документов, по которой будет совершен
-поиск. Параметр *inputDocs* - содержимое документов
+поиск. Параметр inputDocs - содержимое документов
+```
 
 ```
 std::vector<Entry> getWordCount(const std::string& word);
-```
 
 Метод определяет количество вхождений слова *word* в загруженной базе
 документов. Возвращает подготовленный список объектов структуры *Entry*, где
-*docId* - идентификатор документа, *count* - количество вхождений слова в документе
+docId - идентификатор документа, count - количество вхождений слова в документе
+```
 
 ```
 struct Entry {
@@ -201,18 +202,18 @@ struct Entry {
 
 ```
 SearchServer(InvertedIndex& idx) : iIndex(idx){ };
-```
 
 В конструктор класса передаётся ссылка на класс
-InvertedIndex, чтобы *SearchServer* мог узнать частоту слов встречаемых в запросе
+InvertedIndex, чтобы SearchServer мог узнать частоту слов встречаемых в запросе
+```
 
 ```
 std::vector<std::vector<RelativeIndex>> search(const std::vector<std::string>& requests);
-```
 
-Метод обработки поисковых запросов *requests* из файла *requests.json*.
+Метод обработки поисковых запросов *requests* из файла requests.json.
 Возвращает отсортированный список релевантных ответов для заданных запросов
-(структура *RelativeIndex*, где *docId* - идентификатор документа, *rank* - релевантность)
+(структура RelativeIndex, где docId - идентификатор документа, rank - релевантность)
+```
 
 ```
 struct RelativeIndex{
