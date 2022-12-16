@@ -13,25 +13,29 @@ int defineNumberOfResponses(std::size_t currentNumber) {
     return (currentNumber > maxResponses ? maxResponses : currentNumber);
 }
 
+std::unordered_set<std::string> getUniqueWordsFromRequest(const std::string& request) {
+    std::unordered_set<std::string> uniqueWords;
+    std::string word;
+    //Dividing request into separate words and inserting them into the list of unique words
+    for (auto ch : request) {
+        if (ch == ' ') {
+            if (!word.empty()) {
+                uniqueWords.insert(word);
+                word = "";
+            }
+        } else {
+            word += ch;
+        }
+    }
+    if (!word.empty()) uniqueWords.insert(word);
+    return uniqueWords;
+}
+
 std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<std::string> &requests) const {
     std::vector<std::vector<RelativeIndex>> answers;
     for (const auto& request : requests) {
         //Creating a list of unique words in one request
-        std::unordered_set<std::string> uniqueWords;
-        std::string word = "";
-
-        //Dividing request into separate words and inserting them into the list of unique words
-        for (auto ch : request) {
-            if (ch == ' ') {
-                if (!word.empty()) {
-                    uniqueWords.insert(word);
-                    word = "";
-                }
-            } else {
-                word += ch;
-            }
-        }
-        if (!word.empty()) uniqueWords.insert(word);
+        std::unordered_set<std::string> uniqueWords = getUniqueWordsFromRequest(request);
 
         //Counting total occurrences of a unique word in all documents
         std::vector<std::pair<std::string, std::size_t>> uniqueWordsSorted;
