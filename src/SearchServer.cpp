@@ -9,12 +9,11 @@
 #include "SearchServer.h"
 
 int defineNumberOfResponses(std::size_t currentNumber) {
-    ConverterJSON converterJSON;
-    int maxResponses = converterJSON.getResponsesLimit();
+    int maxResponses = ConverterJSON::getResponsesLimit();
     return (currentNumber > maxResponses ? maxResponses : currentNumber);
 }
 
-std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<std::string> &requests) {
+std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<std::string> &requests) const {
     std::vector<std::vector<RelativeIndex>> answers;
     for (const auto& request : requests) {
         //Creating a list of unique words in one request

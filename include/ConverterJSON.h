@@ -12,13 +12,13 @@ class ConverterJSON {
 public:
     ConverterJSON() = default;
 
-    std::vector<std::string> getTextDocuments();
+    static std::vector<std::string> getTextDocuments() ;
 
-    int getResponsesLimit();
+    static int getResponsesLimit();
 
-    std::vector<std::string> getRequests();
+    static std::vector<std::string> getRequests();
 
-    void putAnswers(std::vector<std::vector<std::pair<int, float>>> answers);
+    static void putAnswers(std::vector<std::vector<std::pair<int, float>>> answers);
 };
 
 #endif //SEARCHENGINE_CONVERTERJSON_H

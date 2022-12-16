@@ -6,22 +6,21 @@
 #include "ConverterJSON.h"
 #include <iostream>
 #include <thread>
+#include <utility>
 #include <vector>
 #include <mutex>
 
 std::mutex m;
 
-void getDocUniqueWordsCount(std::size_t docId, std::string docText, std::map<std::string, std::vector<Entry>>& freqDictionary) {
-    std::string word = "";
+void getDocUniqueWordsCount(std::size_t docId, const std::string& docText, std::map<std::string, std::vector<Entry>>& freqDictionary) {
+    std::string word;
     std::map<std::string, std::size_t> uniqueWordsCount;
     for (auto ch : docText) {
         if (ch == ' ') {
             if (!word.empty()) {
                 uniqueWordsCount[word]++;
                 word = "";
-            } else {
-                word = "";
-            };
+            }
         } else {
             word += ch;
         }
@@ -29,8 +28,8 @@ void getDocUniqueWordsCount(std::size_t docId, std::string docText, std::map<std
     if (!word.empty()) uniqueWordsCount[word]++;
     
     std::lock_guard<std::mutex> lock(m);
-    for (auto uniqueWord : uniqueWordsCount) {
-        Entry entry;
+    for (const auto& uniqueWord : uniqueWordsCount) {
+        Entry entry{};
         entry.docId = docId;
         entry.count = uniqueWord.second;
         auto it = freqDictionary.insert({uniqueWord.first, {}});
@@ -39,18 +38,17 @@ void getDocUniqueWordsCount(std::size_t docId, std::string docText, std::map<std
 }
 
 void InvertedIndex::updateDocumentBase(std::vector<std::string> inputDocs) {
-    docs = inputDocs;
+    docs = std::move(inputDocs);
     std::vector<std::thread> docThreads;
     for(std::size_t i = 0; i < docs.size(); i++) {
-        std::thread thr(getDocUniqueWordsCount, i, docs[i], std::ref(freqDictionary));
-        docThreads.push_back(std::move(thr));
+        docThreads.emplace_back(getDocUniqueWordsCount, i, docs[i], std::ref(freqDictionary));
     }
     for (std::size_t i = 0; i < docThreads.size(); i++) {
         docThreads[i].join();
     }
 }
 
-std::vector<Entry> InvertedIndex::getWordCount(const std::string &word) {
+std::vector<Entry> InvertedIndex::getWordCount(const std::string &word) const {
     auto uniqueWord = freqDictionary.find(word);
     if (uniqueWord != freqDictionary.end()) {
         return uniqueWord->second;

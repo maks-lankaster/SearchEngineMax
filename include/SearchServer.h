@@ -20,7 +20,7 @@ public:
 
     SearchServer(InvertedIndex& idx) : iIndex(idx){ };
 
-    std::vector<std::vector<RelativeIndex>> search(const std::vector<std::string>& requests);
+    std::vector<std::vector<RelativeIndex>> search(const std::vector<std::string>& requests) const;
 private:
     InvertedIndex iIndex;
 };

@@ -2,6 +2,8 @@
 // Created by Max on 30.10.2022.
 //
 #include <iostream>
+#include <io.h>
+#include <sys/stat.h>
 #include "ConverterJSON.h"
 #include "Exceptions.h"
 #include "nlohmann/json.hpp"
@@ -66,9 +68,9 @@ void ConverterJSON::putAnswers(std::vector<std::vector<std::pair<int, float>>> a
         if (!answers[i].empty()) {
             answersJSON["answers"][requestNum.str()]["result"] = true;
             if(answers[i].size() > 1) {
-                for (int j = 0; j < answers[i].size(); j++) {
-                    answersJSON["answers"][requestNum.str()]["relevance"].push_back({{"docid", answers[i][j].first},
-                                                                                     {"rank", answers[i][j].second}});
+                for (auto answer : answers[i]) {
+                    answersJSON["answers"][requestNum.str()]["relevance"].push_back({{"docid", answer.first},
+                                                                                     {"rank", answer.second}});
                 }
             } else {
                 answersJSON["answers"][requestNum.str()]["docid"] = answers[i][0].first;
@@ -79,7 +81,9 @@ void ConverterJSON::putAnswers(std::vector<std::vector<std::pair<int, float>>> a
         }
     }
     std::ofstream oAnswersFile("answers.json");
-    oAnswersFile << answersJSON;
+    oAnswersFile << answersJSON.dump(4, ' ');
     oAnswersFile.close();
+    //setting the 'answers.json' as read-only
+    _chmod("answers.json", _S_IREAD);
 }
 
