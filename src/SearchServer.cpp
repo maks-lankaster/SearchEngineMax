@@ -31,6 +31,26 @@ std::unordered_set<std::string> getUniqueWordsFromRequest(const std::string& req
     return uniqueWords;
 }
 
+std::vector<std::pair<std::string, std::size_t>> getUniqueWordsOccurrencesInDocs(const std::unordered_set<std::string>&
+        uniqueWords, const InvertedIndex& iIndex) {
+    std::vector<std::pair<std::string, std::size_t>> uniqueWordsOccurrencesSorted;
+    for (const auto& uniqueWord : uniqueWords) {
+        std::vector<Entry> entries = iIndex.getWordCount(uniqueWord);
+        if(!entries.empty()) {
+            std::size_t sumCount = 0;
+            for (auto entry: entries) {
+                sumCount += entry.count;
+            }
+            uniqueWordsOccurrencesSorted.push_back({uniqueWord, sumCount});
+        }
+    }
+    if (!uniqueWordsOccurrencesSorted.empty()) {
+        std::sort(uniqueWordsOccurrencesSorted.begin(), uniqueWordsOccurrencesSorted.end(), [](std::pair<std::string,
+                std::size_t> &a, std::pair<std::string, std::size_t> &b) { return a.second < b.second; });
+    }
+    return uniqueWordsOccurrencesSorted;
+}
+
 std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<std::string> &requests) const {
     std::vector<std::vector<RelativeIndex>> answers;
     for (const auto& request : requests) {
@@ -38,29 +58,16 @@ std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<s
         std::unordered_set<std::string> uniqueWords = getUniqueWordsFromRequest(request);
 
         //Counting total occurrences of a unique word in all documents
-        std::vector<std::pair<std::string, std::size_t>> uniqueWordsSorted;
-        for (const auto& uniqueWord : uniqueWords) {
-            std::vector<Entry> entries = iIndex.getWordCount(uniqueWord);
-            if(!entries.empty()) {
-                std::size_t sumCount = 0;
-                for (auto entry: entries) {
-                    sumCount += entry.count;
-                }
-                uniqueWordsSorted.push_back({uniqueWord, sumCount});
-            }
-        }
+        std::vector<std::pair<std::string, std::size_t>> uniqueWordsOccurrencesSorted = getUniqueWordsOccurrencesInDocs(uniqueWords, iIndex);
 
         //Sorting unique words by occurrences in all documents (from fewer to greater)
-        if(!uniqueWordsSorted.empty()) {
-            std::sort(uniqueWordsSorted.begin(), uniqueWordsSorted.end(), [](std::pair<std::string,
-                    std::size_t> &a, std::pair<std::string, std::size_t> &b) { return a.second < b.second; });
-
+        if(!uniqueWordsOccurrencesSorted.empty()) {
             std::map<std::size_t, float> docsFound;
-            for (const auto& currentWord: uniqueWordsSorted) { //Loop through sorted words of one request
+            for (const auto& currentWord: uniqueWordsOccurrencesSorted) { //Loop through sorted words of one request
                 std::vector<Entry> entries = iIndex.getWordCount(currentWord.first); //Get all docs (Entry objects) with the current word
                 for (auto currentEntry: entries) { //Loop through docs (Entry objects) with the current word
                     float relevanceAbs = 0;
-                    for (const auto& otherWord: uniqueWordsSorted) { //Loop through sorted words of one request to compare with the current word
+                    for (const auto& otherWord: uniqueWordsOccurrencesSorted) { //Loop through sorted words of one request to compare with the current word
                         std::vector<Entry> otherEntries = iIndex.getWordCount(
                                 otherWord.first); //Get all docs (Entry objects) with the 'other' word
                         for (int i = 0; i < otherEntries.size(); i++) { //Loop through 'other' docs
