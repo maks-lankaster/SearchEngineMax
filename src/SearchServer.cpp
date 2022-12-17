@@ -74,7 +74,7 @@ std::map<std::size_t, float> getDocsAbsoluteRelevance(const std::vector<std::pai
     return docsAbsRelevance;
 }
 
-/*std::vector<RelativeIndex> makeRelativeIndex(const std::map<std::size_t, float>& docsAbsRelevance) {
+std::vector<RelativeIndex> makeRelativeIndex(const std::map<std::size_t, float>& docsAbsRelevance) {
     std::vector<RelativeIndex> relInd;
     for(auto doc: docsAbsRelevance) {
         RelativeIndex ri{};
@@ -96,7 +96,8 @@ std::map<std::size_t, float> getDocsAbsoluteRelevance(const std::vector<std::pai
     for (int i = 0; i < relInd.size(); i++) {
         relInd[i].rank /= maxAbsRelevance;
     }
-}*/
+    return relInd;
+}
 
 std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<std::string> &requests) const {
     std::vector<std::vector<RelativeIndex>> answers;
@@ -109,8 +110,8 @@ std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<s
                     getDocsAbsoluteRelevance(uniqueWordsOccurrencesSorted, iIndex);
             ///////////
             //////////
-            std::vector<RelativeIndex> relInd;
-            for(auto doc: docsAbsRelevance) {
+            //std::vector<RelativeIndex> relInd;
+            /*for(auto doc: docsAbsRelevance) {
                 RelativeIndex ri{};
                 ri.docId = doc.first;
                 ri.rank = doc.second;
@@ -129,14 +130,14 @@ std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<s
             relInd.resize(responsesLimit);
             for (int i = 0; i < relInd.size(); i++) {
                 relInd[i].rank /= maxAbsRelevance;
-            }
+            }*/
 
 
             /////////
             /////////
 
-            //std::vector<RelativeIndex> relativeIndex = makeRelativeIndex(docsAbsRelevance);
-            answers.push_back(relInd);
+            std::vector<RelativeIndex> relativeIndex = makeRelativeIndex(docsAbsRelevance);
+            answers.push_back(relativeIndex);
         } else {
             std::vector<RelativeIndex> ri{};
             answers.push_back(ri);
