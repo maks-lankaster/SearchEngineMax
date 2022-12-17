@@ -41,7 +41,7 @@ std::vector<std::pair<std::string, std::size_t>> getUniqueWordsOccurrencesInDocs
             for (auto entry: entries) {
                 sumCount += entry.count;
             }
-            uniqueWordsOccurrencesSorted.push_back({uniqueWord, sumCount});
+            uniqueWordsOccurrencesSorted.emplace_back(uniqueWord, sumCount);
         }
     }
     if (!uniqueWordsOccurrencesSorted.empty()) {
@@ -75,28 +75,28 @@ std::map<std::size_t, float> getDocsAbsoluteRelevance(const std::vector<std::pai
 }
 
 std::vector<RelativeIndex> makeRelativeIndex(const std::map<std::size_t, float>& docsAbsRelevance) {
-    std::vector<RelativeIndex> relInd;
+    std::vector<RelativeIndex> relativeIndexes;
     for(auto doc: docsAbsRelevance) {
         RelativeIndex ri{};
         ri.docId = doc.first;
         ri.rank = doc.second;
-        relInd.push_back(ri);
+        relativeIndexes.push_back(ri);
     }
     //SORTING BY RANK AND BY DOCID (IF RANK IS EQUAL)
-    std::sort(relInd.begin(), relInd.end(), [](RelativeIndex &a, RelativeIndex &b) {
+    std::sort(relativeIndexes.begin(), relativeIndexes.end(), [](RelativeIndex &a, RelativeIndex &b) {
         if (a.rank == b.rank) {
             return a.docId < b.docId;
         } else {
             return a.rank > b.rank;
         }});
-    float maxAbsRelevance = relInd[0].rank;
+    float maxAbsRelevance = relativeIndexes[0].rank;
     //Define number of answers based on maxResponses from config.json file
-    int responsesLimit = defineNumberOfResponses(relInd.size());
-    relInd.resize(responsesLimit);
-    for (int i = 0; i < relInd.size(); i++) {
-        relInd[i].rank /= maxAbsRelevance;
+    int responsesLimit = defineNumberOfResponses(relativeIndexes.size());
+    relativeIndexes.resize(responsesLimit);
+    for(std::size_t i = 0; i < relativeIndexes.size(); i++) {
+        relativeIndexes[i].rank /= maxAbsRelevance;
     }
-    return relInd;
+    return relativeIndexes;
 }
 
 std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<std::string> &requests) const {
@@ -108,36 +108,8 @@ std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<s
         if(!uniqueWordsOccurrencesSorted.empty()) {
             std::map<std::size_t, float> docsAbsRelevance =
                     getDocsAbsoluteRelevance(uniqueWordsOccurrencesSorted, iIndex);
-            ///////////
-            //////////
-            //std::vector<RelativeIndex> relInd;
-            /*for(auto doc: docsAbsRelevance) {
-                RelativeIndex ri{};
-                ri.docId = doc.first;
-                ri.rank = doc.second;
-                relInd.push_back(ri);
-            }
-            //SORTING BY RANK AND BY DOCID (IF RANK IS EQUAL)
-            std::sort(relInd.begin(), relInd.end(), [](RelativeIndex &a, RelativeIndex &b) {
-                if (a.rank == b.rank) {
-                    return a.docId < b.docId;
-                } else {
-                    return a.rank > b.rank;
-                }});
-            float maxAbsRelevance = relInd[0].rank;
-            //Define number of answers based on maxResponses from config.json file
-            int responsesLimit = defineNumberOfResponses(relInd.size());
-            relInd.resize(responsesLimit);
-            for (int i = 0; i < relInd.size(); i++) {
-                relInd[i].rank /= maxAbsRelevance;
-            }*/
-
-
-            /////////
-            /////////
-
-            std::vector<RelativeIndex> relativeIndex = makeRelativeIndex(docsAbsRelevance);
-            answers.push_back(relativeIndex);
+            std::vector<RelativeIndex> relativeIndexes = makeRelativeIndex(docsAbsRelevance);
+            answers.push_back(relativeIndexes);
         } else {
             std::vector<RelativeIndex> ri{};
             answers.push_back(ri);

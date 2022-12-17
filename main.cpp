@@ -1,5 +1,4 @@
 #include <iostream>
-#include <filesystem>
 
 #include "ConverterJSON.h"
 #include "InvertedIndex.h"
@@ -25,6 +24,22 @@ void starting() {
         throw IncorrectVersionException();
     }
     std::cout << "WELCOME TO " << std::string(configData["config"]["name"]) << std::endl;
+}
+
+std::vector<std::vector<std::pair<int, float>>> convertFromRelativeIndex(std::vector<std::vector<RelativeIndex>>& answersRelativeIndex) {
+    std::vector<std::vector<std::pair<int, float>>> answersPair;
+
+    for (const auto& answers : answersRelativeIndex) {
+        std::vector<std::pair<int, float>> pairsIntFloat;
+        for (auto answer : answers) {
+            std::pair<std::size_t, float> pairIntFloat;
+            pairIntFloat.first = answer.docId;
+            pairIntFloat.second = answer.rank;
+            pairsIntFloat.emplace_back(pairIntFloat);
+        }
+        answersPair.push_back(pairsIntFloat);
+    }
+    return answersPair;
 }
 
 int main() {
@@ -54,20 +69,10 @@ int main() {
     }
 
     //Getting answers to requests
-    std::vector<std::vector<RelativeIndex>> answersRelInd;
-    answersRelInd = searchServer.search(requests);
+    std::vector<std::vector<RelativeIndex>> answersRelativeIndex;
+    answersRelativeIndex = searchServer.search(requests);
 
     //Converting answers of type RelativeIndex to type std::pair<std::size_t, float> to use with putAnswers function
-    std::vector<std::vector<std::pair<int, float>>> answersPair;
-    for (int i = 0; i < answersRelInd.size(); i++) {
-        std::vector<std::pair<int, float>> entries;
-        for (int j = 0; j < answersRelInd[i].size(); j++) {
-            std::pair<std::size_t, float> entry;
-            entry.first = answersRelInd[i][j].docId;
-            entry.second = answersRelInd[i][j].rank;
-            entries.push_back(entry);
-        }
-        answersPair.push_back(entries);
-    }
+    auto answersPair = convertFromRelativeIndex(answersRelativeIndex);
     ConverterJSON::putAnswers(answersPair);
 }
