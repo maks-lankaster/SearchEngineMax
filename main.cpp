@@ -4,7 +4,6 @@
 #include "InvertedIndex.h"
 #include "SearchServer.h"
 #include "Exceptions.h"
-#include "nlohmann/json.hpp"
 
 #define APP_VERSION "1.0"
 

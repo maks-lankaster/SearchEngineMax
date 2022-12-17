@@ -43,6 +43,7 @@ void InvertedIndex::updateDocumentBase(std::vector<std::string> inputDocs) {
     for(std::size_t i = 0; i < docs.size(); i++) {
         docThreads.emplace_back(getDocUniqueWordsCount, i, docs[i], std::ref(freqDictionary));
     }
+
     for (std::size_t i = 0; i < docThreads.size(); i++) {
         docThreads[i].join();
     }

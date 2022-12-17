@@ -16,7 +16,6 @@ int defineNumberOfResponses(std::size_t currentNumber) {
 std::unordered_set<std::string> getUniqueWordsFromRequest(const std::string& request) {
     std::unordered_set<std::string> uniqueWords;
     std::string word;
-    //Dividing request into separate words and inserting them into the list of unique words
     for (auto ch : request) {
         if (ch == ' ') {
             if (!word.empty()) {
