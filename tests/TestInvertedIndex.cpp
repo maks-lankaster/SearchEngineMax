@@ -1,7 +1,3 @@
-//
-// Created by Max on 14.11.2022.
-//
-
 #include "InvertedIndex.h"
 #include "gtest/gtest.h"
 

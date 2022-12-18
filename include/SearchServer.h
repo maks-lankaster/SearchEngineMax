@@ -1,7 +1,3 @@
-//
-// Created by Max on 01.11.2022.
-//
-
 #ifndef SEARCHENGINE_SEARCHSERVER_H
 #define SEARCHENGINE_SEARCHSERVER_H
 

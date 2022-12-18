@@ -1,7 +1,3 @@
-//
-// Created by Max on 01.11.2022.
-//
-
 #include <map>
 #include <unordered_set>
 #include <algorithm>

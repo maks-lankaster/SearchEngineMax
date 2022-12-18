@@ -1,7 +1,3 @@
-//
-// Created by Max on 01.11.2022.
-//
-
 #include "InvertedIndex.h"
 #include "ConverterJSON.h"
 #include <iostream>

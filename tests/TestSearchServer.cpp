@@ -1,7 +1,3 @@
-//
-// Created by Max on 19.11.2022.
-//
-
 #include "SearchServer.h"
 #include <vector>
 #include "gtest/gtest.h"

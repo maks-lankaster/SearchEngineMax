@@ -1,7 +1,3 @@
-//
-// Created by Max on 30.10.2022.
-//
-
 #ifndef SEARCHENGINE_CONVERTERJSON_H
 #define SEARCHENGINE_CONVERTERJSON_H
 #include <vector>

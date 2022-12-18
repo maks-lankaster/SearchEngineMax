@@ -1,6 +1,3 @@
-//
-// Created by Max on 30.10.2022.
-//
 #include <iostream>
 #include <io.h>
 #include <sys/stat.h>

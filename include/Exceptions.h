@@ -1,7 +1,3 @@
-//
-// Created by Max on 05.12.2022.
-//
-
 #ifndef SEARCHENGINEMAX_EXCEPTIONS_H
 #define SEARCHENGINEMAX_EXCEPTIONS_H
 
