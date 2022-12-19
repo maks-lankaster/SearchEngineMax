@@ -39,7 +39,7 @@
 .idea/
 
 # CMake
-cmake-build-*/
+cmake-build-debug/
 
 # File-based project format
 *.iws

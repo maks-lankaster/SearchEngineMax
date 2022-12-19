@@ -1,6 +1,5 @@
 #include <iostream>
-#include <io.h>
-#include <sys/stat.h>
+#include <filesystem>
 #include "ConverterJSON.h"
 #include "Exceptions.h"
 #include "nlohmann/json.hpp"
@@ -80,7 +79,6 @@ void ConverterJSON::putAnswers(std::vector<std::vector<std::pair<int, float>>> a
     std::ofstream oAnswersFile("answers.json");
     oAnswersFile << answersJSON.dump(4, ' ');
     oAnswersFile.close();
-    //setting the 'answers.json' as read-only
-    _chmod("answers.json", _S_IREAD);
+    std::filesystem::permissions("answers.json", std::filesystem::perms::group_read);
 }
 
