@@ -79,6 +79,7 @@ void ConverterJSON::putAnswers(std::vector<std::vector<std::pair<int, float>>> a
     std::ofstream oAnswersFile("answers.json");
     oAnswersFile << answersJSON.dump(4, ' ');
     oAnswersFile.close();
+    //set 'answers.json' file permissions to group read only
     std::filesystem::permissions("answers.json", std::filesystem::perms::group_read);
 }
 
