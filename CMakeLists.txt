@@ -5,6 +5,10 @@ set(CMAKE_CXX_STANDARD 17)
 
 set (CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} "-static")
 
+set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/examples)
+
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/examples)
+
 add_executable(SearchEngineMax main.cpp
         src/SearchServer.cpp
         src/ConverterJSON.cpp
@@ -15,7 +19,6 @@ add_executable(SearchEngineMax main.cpp
         include/Exceptions.h)
 
 # FETCH nlohmann json library
-
 include(FetchContent)
 
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz)
@@ -24,18 +27,11 @@ FetchContent_MakeAvailable(json)
 
 target_link_libraries(SearchEngineMax PRIVATE nlohmann_json::nlohmann_json)
 
-
-#set(JSON_BuildTests OFF CACHE INTERNAL "")
-
-#add_subdirectory(nlohmann_json)
-
 target_include_directories(SearchEngineMax
         PRIVATE
         src
         include
         tests)
-
-#target_link_libraries(SearchEngineMax PRIVATE nlohmann_json::nlohmann_json)
 
 #GOOGLE TEST STUFF
 include(FetchContent)
