@@ -14,9 +14,20 @@ add_executable(SearchEngineMax main.cpp
         include/InvertedIndex.h
         include/Exceptions.h)
 
-set(JSON_BuildTests OFF CACHE INTERNAL "")
+# FETCH nlohmann json library
 
-add_subdirectory(nlohmann_json)
+include(FetchContent)
+
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz)
+
+FetchContent_MakeAvailable(json)
+
+target_link_libraries(SearchEngineMax PRIVATE nlohmann_json::nlohmann_json)
+
+
+#set(JSON_BuildTests OFF CACHE INTERNAL "")
+
+#add_subdirectory(nlohmann_json)
 
 target_include_directories(SearchEngineMax
         PRIVATE
@@ -24,7 +35,7 @@ target_include_directories(SearchEngineMax
         include
         tests)
 
-target_link_libraries(SearchEngineMax PRIVATE nlohmann_json::nlohmann_json)
+#target_link_libraries(SearchEngineMax PRIVATE nlohmann_json::nlohmann_json)
 
 #GOOGLE TEST STUFF
 include(FetchContent)
