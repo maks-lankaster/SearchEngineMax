@@ -1,0 +1,20 @@
+{
+    "config": {
+        "maxResponses": 5,
+        "name": "SEARCH ENGINE MAX",
+        "version": "1.0"
+    },
+    "files": [
+        "resources/anyway.txt",
+        "resources/have.txt",
+        "resources/helloworld.txt",
+        "resources/i.txt",
+        "resources/much.txt",
+        "resources/old.txt",
+        "resources/part1.txt",
+        "resources/respectfully.txt",
+        "resources/the.txt",
+        "resources/they.txt",
+        "resources/well.txt"
+    ]
+}

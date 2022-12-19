@@ -1,0 +1,82 @@
+{
+    "answers": {
+        "request001": {
+            "relevance": [
+                {
+                    "docid": 0,
+                    "rank": 1.0
+                },
+                {
+                    "docid": 8,
+                    "rank": 0.6363636255264282
+                },
+                {
+                    "docid": 7,
+                    "rank": 0.5454545617103577
+                },
+                {
+                    "docid": 1,
+                    "rank": 0.5151515007019043
+                },
+                {
+                    "docid": 5,
+                    "rank": 0.5151515007019043
+                }
+            ],
+            "result": true
+        },
+        "request002": {
+            "relevance": [
+                {
+                    "docid": 10,
+                    "rank": 1.0
+                },
+                {
+                    "docid": 6,
+                    "rank": 0.6666666865348816
+                },
+                {
+                    "docid": 8,
+                    "rank": 0.6666666865348816
+                },
+                {
+                    "docid": 7,
+                    "rank": 0.3333333432674408
+                },
+                {
+                    "docid": 9,
+                    "rank": 0.3333333432674408
+                }
+            ],
+            "result": true
+        },
+        "request003": {
+            "result": false
+        },
+        "request004": {
+            "relevance": [
+                {
+                    "docid": 8,
+                    "rank": 1.0
+                },
+                {
+                    "docid": 1,
+                    "rank": 0.875
+                },
+                {
+                    "docid": 3,
+                    "rank": 0.875
+                },
+                {
+                    "docid": 4,
+                    "rank": 0.75
+                },
+                {
+                    "docid": 6,
+                    "rank": 0.75
+                }
+            ],
+            "result": true
+        }
+    }
+}
