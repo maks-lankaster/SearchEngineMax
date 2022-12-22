@@ -76,16 +76,13 @@ void ConverterJSON::putAnswers(std::vector<std::vector<std::pair<int, float>>> a
             answersJSON["answers"][requestNum.str()]["result"] = false;
         }
     }
-
     std::ofstream oAnswersFile("answers.json");
     if (oAnswersFile.is_open()) {
         std::cout << "Putting search results into the 'answers.json' file..." << std::endl;
         oAnswersFile << answersJSON.dump(4, ' ');
         oAnswersFile.close();
     } else {
-        std::cout << "Search results (answers) could not be written to the answers.json file" << std::endl;
+        throw FileNotWritableException();
     }
-    //set 'answers.json' file permissions to group read only
-    std::filesystem::permissions("answers.json", std::filesystem::perms::group_read);
 }
 

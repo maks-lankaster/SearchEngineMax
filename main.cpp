@@ -22,17 +22,12 @@ void starting() {
     if (APP_VERSION != configData["config"]["version"]) {
         throw IncorrectVersionException();
     }
-    std::ifstream iAnswers("answers.json"); //checking if answers.json exits at all
-    if (iAnswers.is_open()) {
-        std::filesystem::permissions("answers.json", std::filesystem::perms::owner_write); //change attrib to owner-write
-        iAnswers.close();
-        std::cout << "Erasing contents of the 'answers.json' file..." << std::endl;
-        std::ofstream oAnswers("answers.json"); //open file for output and erase its contents
+    std::ofstream oAnswers("answers.json"); //checking if answers.json is writable (if exists) or create a new answers.json
+    if (oAnswers.is_open()) {
+        std::cout << "Creating new or erasing contents of an existing 'answers.json' file..." << std::endl;
         oAnswers << "";
-        oAnswers.close();
     } else {
-        std::cout << "Creating 'answers.json' file..." << std::endl;
-        std::ofstream oAnswers("answers.json"); //creating an empty 'answers.json' file
+        throw FileNotWritableException();
     }
     std::cout << std::endl << "WELCOME TO " << std::string(configData["config"]["name"]) << std::endl << std::endl;
 }

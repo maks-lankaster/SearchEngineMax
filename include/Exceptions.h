@@ -29,4 +29,11 @@ public:
     }
 };
 
+class FileNotWritableException: public std::exception {
+public:
+    const char* what() const noexcept override {
+        return "Can't write to answers.json";
+    }
+};
+
 #endif //SEARCHENGINEMAX_EXCEPTIONS_H
